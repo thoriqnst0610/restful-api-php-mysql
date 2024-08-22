@@ -3,7 +3,7 @@
 require_once __DIR__. '/../db.php';
 
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Methods: DELETE');
 header('Acces-COntrol-Allow-Origin: *');
 
 $data = json_decode(file_get_contents('php://input'),true);
