@@ -146,4 +146,103 @@ Skrip PHP ini menangani permintaan HTTP POST untuk menambahkan data pengguna bar
   }
   ```
 
-pertanyaan tambahan, jangan ragu untuk bertanya!
+Berikut adalah dokumentasi untuk skrip PHP yang menangani permintaan PUT untuk memperbarui data pengguna di basis data.
+
+---
+
+## Dokumentasi API: `update.php`
+
+### Deskripsi
+Skrip PHP ini menangani permintaan HTTP PUT untuk memperbarui data pengguna yang ada di basis data. Skrip ini juga memverifikasi keberadaan dan validitas kunci API (API key) sebelum melakukan operasi pembaruan data.
+
+### Endpoints
+- **URL**: `localhost://restful-api-php-mysql/latihan/update.php`
+- **Metode HTTP**: PUT
+
+### Header
+- `Content-Type`: `application/json` — Menentukan bahwa respons akan dikembalikan dalam format JSON.
+- `Access-Control-Allow-Methods`: `PUT` — Mengizinkan metode HTTP PUT.
+- `Access-Control-Allow-Origin`: `*` — Mengizinkan akses dari semua domain.
+
+### Body Request
+**Format**: JSON
+- **`id`**: Integer — ID pengguna yang akan diperbarui.
+- **`name`**: String — Nama pengguna baru.
+- **`email`**: String — Alamat email pengguna baru.
+
+**Contoh Request Body**:
+```json
+{
+  "id": 123,
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com"
+}
+```
+
+### Respon
+
+**Jika permintaan berhasil:**
+- **Status Code**: `200 OK`
+- **Isi Respons**:
+  ```json
+  {
+    "message": "Berhasil updated"
+  }
+  ```
+  - Tipe data: Objek.
+  - Atribut `message` berisi konfirmasi bahwa data pengguna berhasil diperbarui.
+
+**Jika metode HTTP bukan PUT:**
+- **Status Code**: `400 Bad Request`
+- **Isi Respons**:
+  ```json
+  {
+    "message": "Method Harus Put"
+  }
+  ```
+
+**Jika kunci API tidak valid:**
+- **Status Code**: `403 Forbidden`
+- **Isi Respons**:
+  ```json
+  {
+    "message": "api-key tidak valid"
+  }
+  ```
+
+**Jika data input tidak lengkap:**
+- **Status Code**: `400 Bad Request`
+- **Isi Respons**:
+  ```json
+  {
+    "message": "data tidak ada"
+  }
+  ```
+
+**Jika gagal memperbarui data:**
+- **Status Code**: `500 Internal Server Error`
+- **Isi Respons**:
+  ```json
+  {
+    "message": "Failed to update user"
+  }
+  ```
+
+### Alur Kerja
+
+1. **Verifikasi Metode HTTP:**
+   - Skrip memeriksa apakah metode permintaan adalah PUT. Jika tidak, skrip mengembalikan kode status `400` dan pesan kesalahan.
+
+2. **Verifikasi Kunci API:**
+   - Skrip memeriksa header permintaan untuk `api-key`. Jika kunci API tidak ada atau tidak valid (tidak ditemukan di basis data), skrip mengembalikan kode status `403` dan pesan kesalahan.
+
+3. **Baca dan Validasi Data Input:**
+   - Skrip membaca data JSON dari body permintaan. Memeriksa apakah parameter `id`, `name`, dan `email` ada dalam data input. Jika salah satu dari parameter ini tidak ada, skrip mengembalikan kode status `400` dan pesan kesalahan.
+
+4. **Update Data Pengguna:**
+   - Jika data valid, skrip menjalankan kueri untuk memperbarui data pengguna yang ada di tabel `users` di basis data berdasarkan `id`.
+
+5. **Respons Setelah Pembaruan Data:**
+   - Jika operasi pembaruan berhasil, skrip mengembalikan pesan konfirmasi dengan kode status `200`.
+   - Jika terjadi kesalahan saat memperbarui data, skrip mengembalikan kode status `500` dan pesan kesalahan.
+
