@@ -24,7 +24,7 @@ function isApiKeyValid($apiKey, $pdo)
 
 }
 
-$headers = apache_request_headers();
+$headers = getallheaders();
 
 if(!isset($headers['api-key']) || !isApiKeyValid($headers['api-key'], $pdo))
 {
