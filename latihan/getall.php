@@ -12,15 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-if(!isset($_COOKIE['user'])){
-
-    http_response_code(405);
-    echo json_encode(['message' => 'Cookie tidak di set']);
-    exit;
-
-
-}
-
 function isApiKeyValid($apiKey, $pdo) 
 {
 
