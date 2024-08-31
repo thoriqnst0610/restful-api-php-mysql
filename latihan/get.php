@@ -33,9 +33,8 @@ if(!isset($headers['api-key']) || !isApiKeyValid($headers['api-key'], $pdo))
 
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
 
-if(!isset($data['id']))
+if(!isset($_GET['id']))
 {
 
     http_response_code(400);
@@ -45,7 +44,7 @@ if(!isset($data['id']))
 }else
 {
 
-    $id = $data['id'];
+    $id = $_GET['id'];
 
 }
 
